@@ -2,95 +2,201 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* PepeLab Crypto Theme - Dark Mode Primary */
+    --background: 218 25% 8%;
+    --background-secondary: 220 20% 12%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 20% 12%;
+    --card-foreground: 0 0% 98%;
+    --card-border: 220 15% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Crypto Green Primary */
+    --primary: 160 100% 42%;
+    --primary-glow: 160 100% 52%;
+    --primary-foreground: 220 25% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Pepe Green Secondary */
+    --secondary: 85 45% 45%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Bitcoin Orange Accent */
+    --accent: 31 100% 52%;
+    --accent-foreground: 220 25% 8%;
+    --accent-glow: 31 100% 62%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 65%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --warning: 45 100% 52%;
+    --warning-foreground: 220 25% 8%;
 
-    --radius: 0.5rem;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 160 100% 42%;
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.75rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(160 100% 42%), hsl(160 100% 52%));
+    --gradient-secondary: linear-gradient(135deg, hsl(85 45% 45%), hsl(100 50% 55%));
+    --gradient-accent: linear-gradient(135deg, hsl(31 100% 52%), hsl(31 100% 62%));
+    --gradient-background: linear-gradient(135deg, hsl(218 25% 8%), hsl(220 20% 12%));
+    --gradient-card: linear-gradient(135deg, hsl(220 20% 12%), hsl(220 15% 15%));
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Shadows & Glows */
+    --shadow-primary: 0 0 30px hsl(160 100% 42% / 0.3);
+    --shadow-accent: 0 0 30px hsl(31 100% 52% / 0.3);
+    --shadow-card: 0 8px 32px hsl(220 25% 8% / 0.6);
+    --glow-primary: 0 0 20px hsl(160 100% 52% / 0.4);
+    --glow-accent: 0 0 20px hsl(31 100% 62% / 0.4);
+  }
+}
 
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+@layer base {
+  * {
+    @apply border-border;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  body {
+    @apply bg-gradient-to-br from-background to-background-secondary text-foreground font-medium;
+    background-attachment: fixed;
+  }
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary-glow));
+  }
+}
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+@layer components {
+  /* Glow Effects */
+  .glow-primary {
+    box-shadow: var(--glow-primary);
+  }
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+  /* Gradient Backgrounds */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+
+  .bg-gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  /* Animated Elements */
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Crypto Card Hover Effects */
+  .crypto-card {
+    @apply bg-gradient-card border border-card-border rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:border-primary/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .crypto-card:hover {
+    box-shadow: var(--shadow-card), var(--glow-primary);
+  }
+
+  /* Status Indicators */
+  .status-active {
+    @apply bg-primary text-primary-foreground;
+    box-shadow: var(--glow-primary);
+  }
+
+  .status-processing {
+    @apply bg-accent text-accent-foreground;
+    box-shadow: var(--glow-accent);
+  }
+
+  .status-idle {
+    @apply bg-muted text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  /* Text Gradients */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-accent {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 5px hsl(var(--primary) / 0.3));
+  }
+  100% {
+    filter: brightness(1.2) drop-shadow(0 0 15px hsl(var(--primary) / 0.6));
   }
 }
 
