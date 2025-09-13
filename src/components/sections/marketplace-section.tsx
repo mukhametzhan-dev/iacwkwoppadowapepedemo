@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MemecoinCard } from '@/components/ui/memecoin-card';
-import { LaunchModal } from '@/components/ui/launch-modal';
+import { SimpleLaunchTokenModal } from '@/components/SimpleLaunchTokenModal';
 import { mockMemecoinConcepts, getRandomConcept } from '@/data/mockData';
 import { MemecoinConcept } from '@/types/memecoin';
 import { Grid, List, Filter, Plus, Sparkles } from 'lucide-react';
@@ -10,7 +10,7 @@ import { Grid, List, Filter, Plus, Sparkles } from 'lucide-react';
 export const MarketplaceSection = () => {
   const [concepts, setConcepts] = useState(mockMemecoinConcepts);
   const [selectedConcept, setSelectedConcept] = useState<MemecoinConcept | null>(null);
-  const [isLaunchModalOpen, setIsLaunchModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('newest');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -18,7 +18,7 @@ export const MarketplaceSection = () => {
 
   const handleLaunch = (concept: MemecoinConcept) => {
     setSelectedConcept(concept);
-    setIsLaunchModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const generateNewConcept = () => {
@@ -193,14 +193,18 @@ export const MarketplaceSection = () => {
         </div>
       </section>
 
-      <LaunchModal
-        concept={selectedConcept}
-        isOpen={isLaunchModalOpen}
-        onClose={() => {
-          setIsLaunchModalOpen(false);
-          setSelectedConcept(null);
-        }}
-      />
+      {/* Launch Modal */}
+      <SimpleLaunchTokenModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        initialData={selectedConcept ? {
+          name: selectedConcept.name,
+          symbol: selectedConcept.ticker,
+          description: selectedConcept.description,
+        } : undefined}
+      >
+        <div style={{ display: 'none' }} />
+      </SimpleLaunchTokenModal>
     </>
   );
 };

@@ -1,17 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { WalletModal } from '@/components/ui/wallet-modal';
-import { Wallet, Menu, X } from 'lucide-react';
-import { useWallet } from '@/hooks/use-wallet';
+import { SimplePhantomWallet } from '@/components/SimplePhantomWallet';
+import { Menu, X } from 'lucide-react';
 
 export const Header = () => {
-  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { wallet } = useWallet();
-
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 4)}...${address.slice(-4)}`;
-  };
 
   return (
     <>
@@ -19,10 +12,11 @@ export const Header = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center animate-pulse-glow">
-              <span className="text-primary-foreground font-bold text-lg">P</span>
-            </div>
-            <span className="text-xl font-bold text-gradient-primary">PepeLab.me</span>
+            <img 
+              src="/pepe-logo.png" 
+              alt="PepeLab Logo" 
+              className="h-16 w-auto object-contain bg-white/90 dark:bg-white/95 rounded-lg px-3 py-1 shadow-sm"
+            />
           </div>
 
           {/* Desktop Navigation */}
@@ -43,25 +37,9 @@ export const Header = () => {
 
           {/* Wallet Connection */}
           <div className="flex items-center space-x-4">
-            {wallet.status === 'connected' ? (
-              <div className="hidden md:flex items-center space-x-3 bg-card border border-card-border rounded-lg px-4 py-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
-                <span className="text-sm font-medium">{formatAddress(wallet.address!)}</span>
-                <span className="text-xs text-muted-foreground">
-                  {wallet.balance?.toFixed(2)} SOL
-                </span>
-              </div>
-            ) : (
-              <Button
-                onClick={() => setIsWalletModalOpen(true)}
-                variant="outline"
-                size="sm"
-                className="hidden md:flex bg-gradient-primary text-primary-foreground border-0 hover:opacity-90"
-              >
-                <Wallet className="w-4 h-4 mr-2" />
-                Connect Wallet
-              </Button>
-            )}
+            <div className="hidden md:flex">
+              <SimplePhantomWallet />
+            </div>
 
             {/* Mobile Menu Toggle */}
             <Button
@@ -92,32 +70,14 @@ export const Header = () => {
                 Analytics
               </a>
               
-              {wallet.status === 'connected' ? (
-                <div className="flex items-center space-x-3 bg-card border border-card-border rounded-lg px-4 py-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
-                  <span className="text-sm font-medium">{formatAddress(wallet.address!)}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {wallet.balance?.toFixed(2)} SOL
-                  </span>
-                </div>
-              ) : (
-                <Button
-                  onClick={() => setIsWalletModalOpen(true)}
-                  className="w-full bg-gradient-primary text-primary-foreground border-0 hover:opacity-90"
-                >
-                  <Wallet className="w-4 h-4 mr-2" />
-                  Connect Wallet
-                </Button>
-              )}
+              {/* Mobile Wallet Connection */}
+              <div className="pt-4 border-t border-card-border">
+                <SimplePhantomWallet />
+              </div>
             </nav>
           </div>
         )}
       </header>
-
-      <WalletModal
-        isOpen={isWalletModalOpen}
-        onClose={() => setIsWalletModalOpen(false)}
-      />
     </>
   );
 };

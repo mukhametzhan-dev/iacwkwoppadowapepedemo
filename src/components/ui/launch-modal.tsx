@@ -5,7 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { MemecoinConcept } from '@/types/memecoin';
 import { useWallet } from '@/hooks/use-wallet';
-import { Star, TrendingUp, Users, MessageCircle, Send, Wallet, Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { useConnection, useWallet as useSolanaWallet } from '@solana/wallet-adapter-react';
+import { LaunchTokenButton } from '@/components/LaunchTokenButton';
+import { AddLiquidityButton } from '@/components/AddLiquidityButton';
+import { createAnchorClient } from '@/solana/anchorClient';
+import { Star, TrendingUp, Users, MessageCircle, Send, Wallet, Loader2, CheckCircle, AlertTriangle, Rocket } from 'lucide-react';
 
 interface LaunchModalProps {
   concept: MemecoinConcept | null;
@@ -16,35 +20,81 @@ interface LaunchModalProps {
 export const LaunchModal = ({ concept, isOpen, onClose }: LaunchModalProps) => {
   const [isLaunching, setIsLaunching] = useState(false);
   const [launchStep, setLaunchStep] = useState(0);
+  const [launchResult, setLaunchResult] = useState<{
+    mintAddress: string;
+    txSig: string;
+    recordTxSig?: string;
+  } | null>(null);
   const { wallet } = useWallet();
+  const { connection } = useConnection();
+  const solanaWallet = useSolanaWallet();
 
   const launchSteps = [
-    'Preparing smart contract',
-    'Generating metadata',
-    'Creating liquidity pool',
-    'Deploying to Solana',
-    'Initializing trading',
+    'Creating SPL token',
+    'Minting initial supply',
+    'Recording launch on-chain',
+    'Finalizing metadata',
+    'Launch complete!',
   ];
 
-  const handleLaunch = async () => {
-    if (wallet.status !== 'connected') {
-      return;
-    }
-
+  const handleTokenLaunchStarted = () => {
     setIsLaunching(true);
-    
-    // Simulate launch process
-    for (let i = 0; i <= launchSteps.length; i++) {
-      setLaunchStep(i);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-    }
+    setLaunchStep(0);
+  };
 
-    // Reset after completion
-    setTimeout(() => {
+  const handleTokenLaunchSuccess = async (mintAddress: string, txSig: string) => {
+    setLaunchStep(1);
+    
+    try {
+      // Try to record the launch on-chain using Anchor program
+      if (process.env.VITE_SOLANA_PROGRAM_ID && process.env.VITE_SOLANA_PROGRAM_ID !== 'REPLACE_WITH_PROGRAM_ID_AFTER_DEPLOY') {
+        setLaunchStep(2);
+        const anchorClient = createAnchorClient(connection, solanaWallet);
+        const recordResult = await anchorClient.recordLaunch(mintAddress);
+        
+        setLaunchResult({
+          mintAddress,
+          txSig,
+          recordTxSig: recordResult.signature
+        });
+      } else {
+        // Skip Anchor recording if program not deployed
+        setLaunchResult({
+          mintAddress,
+          txSig
+        });
+      }
+      
+      setLaunchStep(3);
+      
+      // Complete the process
+      setTimeout(() => {
+        setLaunchStep(4);
+        setIsLaunching(false);
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Failed to record launch on-chain:', error);
+      // Still consider it successful if token was created
+      setLaunchResult({
+        mintAddress,
+        txSig
+      });
+      setLaunchStep(4);
       setIsLaunching(false);
-      setLaunchStep(0);
-      onClose();
-    }, 2000);
+    }
+  };
+
+  const handleTokenLaunchError = (error: Error) => {
+    console.error('Token launch failed:', error);
+    setIsLaunching(false);
+    setLaunchStep(0);
+  };
+
+  const resetLaunch = () => {
+    setIsLaunching(false);
+    setLaunchStep(0);
+    setLaunchResult(null);
   };
 
   if (!concept) return null;
@@ -259,56 +309,111 @@ export const LaunchModal = ({ concept, isOpen, onClose }: LaunchModalProps) => {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Total Supply:</span>
-                    <span className="text-foreground font-mono">1,000,000,000 {concept.ticker}</span>
+                    <span className="text-foreground font-mono">1,000,000 {concept.ticker}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Initial Liquidity:</span>
-                    <span className="text-foreground">10 SOL</span>
+                    <span className="text-muted-foreground">Decimals:</span>
+                    <span className="text-foreground">6</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Launch Fee:</span>
-                    <span className="text-foreground">0.5 SOL</span>
+                    <span className="text-muted-foreground">Network:</span>
+                    <span className="text-foreground">Solana Devnet</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Creator Allocation:</span>
-                    <span className="text-foreground">5%</span>
+                    <span className="text-muted-foreground">Token Standard:</span>
+                    <span className="text-foreground">SPL Token</span>
                   </div>
                 </div>
               </div>
+
+              {/* Launch Success */}
+              {launchResult && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                    <h4 className="text-lg font-semibold text-green-800">Token Launched Successfully!</h4>
+                  </div>
+                  
+                  <div className="space-y-3 text-sm">
+                    <div>
+                      <span className="text-green-700 font-medium">Mint Address:</span>
+                      <div className="font-mono text-xs bg-green-100 p-2 rounded mt-1 break-all">
+                        {launchResult.mintAddress}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <span className="text-green-700 font-medium">Transaction:</span>
+                      <div className="font-mono text-xs bg-green-100 p-2 rounded mt-1 break-all">
+                        {launchResult.txSig}
+                      </div>
+                    </div>
+
+                    {launchResult.recordTxSig && (
+                      <div>
+                        <span className="text-green-700 font-medium">On-chain Record:</span>
+                        <div className="font-mono text-xs bg-green-100 p-2 rounded mt-1 break-all">
+                          {launchResult.recordTxSig}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-4 flex gap-2">
+                    <AddLiquidityButton 
+                      mintAddress={launchResult.mintAddress}
+                      tokenSymbol={concept.ticker}
+                      className="flex-1"
+                    />
+                    <Button
+                      onClick={resetLaunch}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Launch Another
+                    </Button>
+                  </div>
+                </div>
+              )}
 
               {/* Warning */}
-              <div className="bg-warning/10 border border-warning rounded-lg p-4">
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <AlertTriangle className="w-5 h-5 text-warning mt-0.5" />
+                  <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
                   <div className="text-sm">
-                    <div className="text-warning font-semibold mb-1">Investment Warning</div>
-                    <div className="text-muted-foreground">
-                      Memecoins are highly speculative and volatile. Only invest what you can afford to lose.
-                      This is a demo and no real tokens will be created.
+                    <div className="text-orange-800 font-semibold mb-1">Devnet Notice</div>
+                    <div className="text-orange-700">
+                      This will create a real SPL token on Solana devnet for testing purposes only. 
+                      Devnet tokens have no monetary value.
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Launch Button */}
-              <div className="space-y-4">
-                {wallet.status !== 'connected' ? (
-                  <div className="text-center p-4 bg-muted/20 rounded-lg">
-                    <Wallet className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <div className="text-sm text-muted-foreground">
-                      Connect your wallet to launch this token
+              {/* Launch Component */}
+              {!launchResult && (
+                <div className="space-y-4">
+                  {!solanaWallet.connected ? (
+                    <div className="text-center p-4 bg-muted/20 rounded-lg">
+                      <Wallet className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                      <div className="text-sm text-muted-foreground">
+                        Connect your Phantom wallet to launch this token on Solana devnet
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <Button
-                    onClick={handleLaunch}
-                    className="w-full bg-gradient-primary text-primary-foreground border-0 hover:opacity-90 py-4 text-lg font-semibold glow-primary"
-                  >
-                    Launch {concept.name}
-                    <TrendingUp className="ml-2 w-5 h-5" />
-                  </Button>
-                )}
-              </div>
+                  ) : (
+                    <LaunchTokenButton
+                      name={concept.name}
+                      symbol={concept.ticker}
+                      supply={1000000}
+                      decimals={6}
+                      onStarted={handleTokenLaunchStarted}
+                      onSuccess={handleTokenLaunchSuccess}
+                      onError={handleTokenLaunchError}
+                      disabled={isLaunching}
+                    />
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
