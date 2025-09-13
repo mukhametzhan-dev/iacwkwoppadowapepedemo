@@ -27,7 +27,7 @@ It provides a clean visual interface with **trend radar, coin concepts, analytic
 
 ## 🌐 Live Demo
 
-🔗 [Pepelab.me Dashboard](https://pepelab.netlify.app)
+🔗 [Pepelab.me Dashboard](https://pepelabme.netlify.app)
 
 ---
 
