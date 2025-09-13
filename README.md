@@ -31,13 +31,13 @@ It provides a clean visual interface with **trend radar, coin concepts, analytic
 
 ---
 
-## 🛠️ Setup
+## 🛠️ Setup (Frontend)
 
 Clone and install dependencies:
 
 ```bash
-git clone https://github.com/yourusername/pepelab.me.git
-cd pepelab.me
+git clone https://github.com/mukhametzhan-dev/pepelab.git
+cd pepelab
 npm install
 npm run dev
 ```
