@@ -56,5 +56,6 @@ npm run dev
 ## 📜 License
 
 MIT License © 2025 **Pepelab.me**
+**POWERED BY NomadSol **
 
 
