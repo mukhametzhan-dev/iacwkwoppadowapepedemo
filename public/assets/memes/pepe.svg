@@ -1,0 +1,5 @@
+<!-- Placeholder SVG for Pepe -->
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" r="32" fill="#00D26A"/>
+  <text x="32" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">PEPE</text>
+</svg>

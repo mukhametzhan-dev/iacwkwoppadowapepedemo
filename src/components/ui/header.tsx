@@ -2,9 +2,32 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SimplePhantomWallet } from '@/components/SimplePhantomWallet';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/' && !location.hash;
+    }
+    return location.pathname === path;
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      // Navigate to home first, then scroll
+      window.location.href = `/#${sectionId}`;
+    } else {
+      // Already on home page, just scroll
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
@@ -24,18 +47,42 @@ export const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-foreground hover:text-primary transition-colors">
+            <Link
+              to="/"
+              className={`transition-colors ${
+                isActive('/') ? 'text-primary' : 'text-foreground hover:text-primary'
+              }`}
+            >
               Home
-            </a>
-            <a href="#agents" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <button
+              onClick={() => scrollToSection('agents')}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               AI Agents
-            </a>
-            <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
+            </button>
+            <button
+              onClick={() => scrollToSection('marketplace')}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               Marketplace
-            </a>
-            <a href="#analytics" className="text-foreground hover:text-primary transition-colors">
+            </button>
+            <Link
+              to="/dashboard"
+              className={`transition-colors ${
+                isActive('/dashboard') ? 'text-primary' : 'text-foreground hover:text-primary'
+              }`}
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/analytics"
+              className={`transition-colors ${
+                isActive('/analytics') ? 'text-primary' : 'text-foreground hover:text-primary'
+              }`}
+            >
               Analytics
-            </a>
+            </Link>
           </nav>
 
           {/* Wallet Connection */}
@@ -60,18 +107,45 @@ export const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-background/95 backdrop-blur-lg border-t border-card-border">
             <nav className="container mx-auto px-4 py-4 space-y-4">
-              <a href="#home" className="block text-foreground hover:text-primary transition-colors">
+              <Link
+                to="/"
+                className={`block transition-colors ${
+                  isActive('/') ? 'text-primary' : 'text-foreground hover:text-primary'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Home
-              </a>
-              <a href="#agents" className="block text-foreground hover:text-primary transition-colors">
+              </Link>
+              <button
+                onClick={() => scrollToSection('agents')}
+                className="block text-foreground hover:text-primary transition-colors"
+              >
                 AI Agents
-              </a>
-              <a href="#marketplace" className="block text-foreground hover:text-primary transition-colors">
+              </button>
+              <button
+                onClick={() => scrollToSection('marketplace')}
+                className="block text-foreground hover:text-primary transition-colors"
+              >
                 Marketplace
-              </a>
-              <a href="#analytics" className="block text-foreground hover:text-primary transition-colors">
+              </button>
+              <Link
+                to="/dashboard"
+                className={`block transition-colors ${
+                  isActive('/dashboard') ? 'text-primary' : 'text-foreground hover:text-primary'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/analytics"
+                className={`block transition-colors ${
+                  isActive('/analytics') ? 'text-primary' : 'text-foreground hover:text-primary'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Analytics
-              </a>
+              </Link>
               
               {/* Mobile Wallet Connection */}
               <div className="pt-4 border-t border-card-border">

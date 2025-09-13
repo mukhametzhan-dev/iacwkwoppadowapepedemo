@@ -3,8 +3,20 @@ import { HeroSection } from '@/components/sections/hero-section';
 import { AIAgentsSection } from '@/components/sections/ai-agents-section';
 import { MarketplaceSection } from '@/components/sections/marketplace-section';
 import { SimpleLaunchTokenButton } from '@/components/SimpleLaunchTokenButton';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Handle analytics anchor navigation
+    const hash = window.location.hash;
+    if (hash === '#analytics') {
+      navigate('/analytics');
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-background">
       <Header />
@@ -38,7 +50,9 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>      <AIAgentsSection />
+      </section>
+      
+      <AIAgentsSection />
       <MarketplaceSection />
     </div>
   );

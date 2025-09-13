@@ -1,0 +1,139 @@
+{
+  "trendRadar": {
+    "title": "Trend Radar",
+    "subtitle": "Interactive map of hot topics with meme potential",
+    "trends": [
+      {
+        "id": "frog-space",
+        "topic": "FROG + SPACE",
+        "memePotential": 92,
+        "x": 65,
+        "y": 30,
+        "sources": [
+          {
+            "type": "twitter",
+            "content": "Frogs are the new apes 🐸🚀 #Solana",
+            "engagement": "12k likes"
+          },
+          {
+            "type": "news",
+            "content": "CoinDesk: Community rallies around frog-themed meme coin on Solana",
+            "engagement": "5k views"
+          }
+        ]
+      },
+      {
+        "id": "moon-cats",
+        "topic": "MOON CATS",
+        "memePotential": 78,
+        "x": 45,
+        "y": 60,
+        "sources": [
+          {
+            "type": "reddit",
+            "content": "r/CryptoMoonShots: Moon cats taking over 🐱🌙",
+            "engagement": "2.3k upvotes"
+          }
+        ]
+      },
+      {
+        "id": "degen-apes",
+        "topic": "DEGEN APES",
+        "memePotential": 85,
+        "x": 80,
+        "y": 75,
+        "sources": [
+          {
+            "type": "twitter",
+            "content": "Degen apes building on Solana 🦍⚡",
+            "engagement": "8.5k likes"
+          }
+        ]
+      },
+      {
+        "id": "ai-robots",
+        "topic": "AI ROBOTS",
+        "memePotential": 68,
+        "x": 25,
+        "y": 40,
+        "sources": [
+          {
+            "type": "telegram",
+            "content": "AI robot memes going viral in crypto TG",
+            "engagement": "15k members"
+          }
+        ]
+      }
+    ]
+  },
+  "conceptShowcase": {
+    "title": "Concept Showcase",
+    "subtitle": "Ready-to-launch meme-coin ideas with risk & hype assessment",
+    "featured": {
+      "name": "MOON FROG",
+      "symbol": "MFROG",
+      "description": "Moon Frog merges frog memes with Solana's space race narrative.",
+      "risk": 35,
+      "hype": 92,
+      "logo": "🐸🌙",
+      "tags": ["Trending", "Solana", "Meme"],
+      "marketPotential": "High",
+      "timeframe": "2-4 weeks",
+      "sources": [
+        "Twitter trend analysis",
+        "Reddit sentiment tracking",
+        "Influencer mentions"
+      ]
+    }
+  },
+  "analyticsHub": {
+    "title": "Analytics Hub",
+    "subtitle": "Deep analysis of successful meme launches on Solana",
+    "successfulCoins": [
+      {
+        "name": "dogwifhat",
+        "symbol": "WIF",
+        "successScore": 85,
+        "marketCap": "$2.1B",
+        "launched": "Dec 2023",
+        "similarity": "High narrative strength",
+        "color": "#16a34a"
+      },
+      {
+        "name": "Bonk",
+        "symbol": "BONK",
+        "successScore": 78,
+        "marketCap": "$890M",
+        "launched": "Dec 2022",
+        "similarity": "Community-driven launch",
+        "color": "#22c55e"
+      },
+      {
+        "name": "Pepe",
+        "symbol": "PEPE",
+        "successScore": 66,
+        "marketCap": "$3.2B",
+        "launched": "Apr 2023",
+        "similarity": "Meme longevity factor",
+        "color": "#4ade80"
+      }
+    ],
+    "insights": [
+      "Strong community backing increases success by 73%",
+      "Narrative-driven tokens outperform by 2.4x",
+      "Solana memes launch 85% faster than other chains"
+    ]
+  },
+  "launchCard": {
+    "title": "Launch Token",
+    "subtitle": "Quickly simulate token launch from a concept",
+    "action": "LAUNCH",
+    "description": "Transform trending concepts into deployable meme tokens with one click",
+    "features": [
+      "Instant concept validation",
+      "Smart contract generation",
+      "Community metrics analysis",
+      "Risk assessment report"
+    ]
+  }
+}

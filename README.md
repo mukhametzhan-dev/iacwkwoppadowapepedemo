@@ -1,52 +1,132 @@
-# English prompt for an AI developer agent — integrate Solana into a React + TypeScript frontend (MVP)
+# PepeLab.me - Solana Meme Token Platform
 
-You are an AI developer. You have access to a React + TypeScript (TSX) repository. Your task is to extend the frontend to add a minimal, safe, working MVP for Solana integration (use **devnet** only). Changes should be delivered as small, well-typed code pieces, with clear instructions, tests and a PR summary. Do the steps below and return changed files / diffs / run instructions and an acceptance checklist.
+A React + TypeScript frontend for creating and analyzing meme tokens on Solana devnet.
+
+## 🚀 Features
+
+- **Token Launch**: Create SPL tokens on Solana devnet with backend API integration
+- **Phantom Wallet**: Real wallet connection with balance display and localStorage persistence  
+- **Analytics Dashboard**: Interactive price charts and market data for trending meme coins
+- **Meme-Coin Dashboard**: Visualize how meme-coins are generated from trends and social media
+- **Responsive Design**: Mobile-friendly UI with Tailwind CSS and shadcn/ui components
+
+## 📊 Dashboard Page
+
+### Viewing Dashboard
+
+Access the meme-coin dashboard at:
+- **URL**: `http://localhost:8080/dashboard` 
+- **Navigation**: Click "Dashboard" in the header menu
+
+### Layout (2x2 Grid)
+
+**Row 1:**
+- **Trend Radar**: Interactive radar showing trending topics with meme potential (FROG + SPACE, MOON CATS, etc.)
+- **Concept Showcase**: Featured MOON FROG concept with Risk (35%) and Hype Potential (92%) metrics
+
+**Row 2:**
+- **Analytics Hub**: Success similarity scores for WIF (85%), BONK (78%), PEPE (66%) with progress bars
+- **Launch Card**: Green LAUNCH button to simulate token creation from concepts
+
+### Features
+
+- **Interactive Radar**: Click trend points to see source data from Twitter, Reddit, news
+- **Real-time Metrics**: Risk assessment and hype potential analysis
+- **Success Patterns**: Compare with successful Solana meme coins
+- **Launch Simulation**: Working launch button with loading states and navigation
+
+### Demo Script
+
+1. **Open Dashboard**: Navigate to `http://localhost:8080/dashboard`
+2. **Explore Trends**: Click on "FROG + SPACE" point in the radar to see viral sources
+3. **View Concept**: Review MOON FROG metrics and risk/hype assessment
+4. **Check Analytics**: See how concept compares to successful coins like WIF, BONK
+5. **Launch Token**: Click green LAUNCH button to simulate deployment
+6. **Launch Flow**: Watch loading animation and redirect to launch page
+
+## 📊 Analytics Page
+
+### Viewing Analytics
+
+Access the analytics section at:
+- **URL**: `http://localhost:8080/analytics` 
+- **Navigation**: Click "Analytics" in the header menu
+- **Direct Link**: `/#analytics` redirects to `/analytics`
+
+### Features
+
+- **4 Meme Coins**: TRUMP, PEPE, DOGE, WOJ with real-time mock data
+- **Interactive Charts**: Price charts with 1D/7D/30D/90D timeframes
+- **Market Metrics**: Market cap, volume, TVL, and 24h change data
+- **Sparklines**: Mini charts on each card showing price trends
+- **Deep Linking**: Share specific coins with `?coin=trump` URL parameter
+- **Explorer Links**: Direct links to Solana Explorer on devnet
+
+## 🛠️ Development
+
+### Setup
+
+```bash
+npm install
+npm run dev
+```
+
+The application will be available at `http://localhost:8080`
+
+### Testing
+
+```bash
+npm test
+```
+
+### Project Structure
+
+```
+src/
+├── components/
+│   ├── TrendRadar.tsx         # Interactive trend radar visualization
+│   ├── ConceptCard.tsx        # Meme concept showcase with metrics
+│   ├── AnalyticsHub.tsx       # Success comparison with progress bars
+│   ├── LaunchCard.tsx         # Token launch simulation button
+│   ├── MemeCard.tsx           # Individual meme coin cards
+│   ├── MemeDetail.tsx         # Detail modal with charts
+│   ├── PriceChart.tsx         # Interactive price charts
+│   ├── Sparkline.tsx          # Mini sparkline charts
+│   └── SimplePhantomWallet.tsx # Wallet connection
+├── data/
+│   ├── dashboard.json         # Dashboard trend and concept data
+│   └── analytics-memes.json   # Static meme coin data
+├── pages/
+│   ├── Dashboard.tsx          # Meme-coin dashboard
+│   ├── Analytics.tsx          # Analytics dashboard
+│   └── Index.tsx             # Home page
+└── assets/
+    └── memes/                # Meme coin logos
+```
+
+## 📱 Tech Stack
+
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Charts**: Recharts library
+- **Routing**: React Router v6
+- **Wallet**: @solana/web3.js (display only)
+- **Build**: Vite
+
+## 🔗 Navigation
+
+- **Home** (`/`): Token launch demo and main sections
+- **Dashboard** (`/dashboard`): Meme-coin trend analysis and concept showcase
+- **Analytics** (`/analytics`): Meme coin analytics dashboard
+- **Wallet**: Phantom wallet connection in header
+
+## 📊 Data
+
+All dashboard and analytics data is static and stored in JSON files. No external APIs are called for the dashboard functionality.
 
 ---
 
-## 0) Global rules
-
-* Use **devnet** by default: `https://api.devnet.solana.com`. Do **not** use mainnet.
-* Never store private keys / seed phrases in the repo. All user signing must go through a browser wallet (Phantom or others) using `@solana/wallet-adapter`.
-* TypeScript only. Respect types and linting norms.
-* Provide clear commits and one PR summary.
-* Provide step-by-step run instructions (install deps, start dev server).
-* Add minimal unit/integration tests using Jest + React Testing Library (mock web3 interactions).
-* Explain any fallback if a browser wallet cannot sign a specific flow (e.g., createMint).
-
----
-
-## 1) Locate project root
-
-* Find `package.json` and the `src/` directory.
-* Use `yarn` if project uses Yarn, otherwise `npm`.
-
----
-
-## 2) Add dependencies
-
-Update `package.json` (or install) adding these dependencies:
-
-```
-@solana/web3.js
-@solana/spl-token
-@solana/wallet-adapter-base
-@solana/wallet-adapter-react
-@solana/wallet-adapter-react-ui
-@solana/wallet-adapter-wallets
-axios
-```
-
-Add devDeps for tests if missing:
-
-```
-@testing-library/react
-@testing-library/jest-dom
-jest
-ts-jest
-```
-
-Example install command (npm):
+# Original Solana Integration Guide
 
 ```bash
 npm install @solana/web3.js @solana/spl-token @solana/wallet-adapter-base \
