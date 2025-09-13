@@ -18,7 +18,7 @@ const Index = () => {
               Token Launch Demo
             </h2>
             <p className="text-muted-foreground">
-              Launch SPL tokens on Solana devnet using our backend API. No wallet connection required!
+              Launch SPL tokens on Solana devnet using our API. No wallet connection required!
             </p>
           </div>
           

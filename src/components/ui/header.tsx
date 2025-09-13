@@ -13,10 +13,13 @@ export const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <img 
-              src="/pepe-logo.png" 
+              src="/pepehead.png" 
               alt="PepeLab Logo" 
-              className="h-16 w-auto object-contain bg-white/90 dark:bg-white/95 rounded-lg px-3 py-1 shadow-sm"
+              className="h-10 w-10 object-contain"
             />
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              PepeLab
+            </span>
           </div>
 
           {/* Desktop Navigation */}
